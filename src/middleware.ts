@@ -5,11 +5,9 @@ export default withAuth(
     function middleware(req) {
         const token = req.nextauth.token;
         const path = req.nextUrl.pathname;
-
         if (path.startsWith("/admin") && token?.role !== "admin") {
             return NextResponse.redirect(new URL("/login?error=unauthorized", req.url));
         }
-
         return NextResponse.next();
     },
     {

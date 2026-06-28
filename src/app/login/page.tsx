@@ -67,7 +67,7 @@ export default function LoginPage() {
                 </div>
             </div>
             <Link
-                href="/admin/login"
+                href="http://localhost:3001/admin/login"
                 className="fixed bottom-5 right-5 z-50 bg-white/80 backdrop-blur-sm hover:bg-primary/10 border border-border rounded-full w-64 h-14 flex items-center justify-center transition-all duration-200 group shadow-lg"
                 title="Accès admin"
             >

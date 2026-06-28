@@ -2,7 +2,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { Speaker } from "@/types";
 import FavoriteButton from "@/components/FavoriteButton";
-import RoomLink from "@/components/RoomLink"; // <-- importer
+import RoomLink from "@/components/RoomLink";
 
 async function getSpeaker(id: string): Promise<Speaker | null> {
     const base = process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000";

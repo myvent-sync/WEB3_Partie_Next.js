@@ -76,7 +76,7 @@ export default function EventViewToggler({ event }: { event: Event }) {
                       <span className="font-mono text-muted-foreground">
                         {formatTime(session.startTime)} – {formatTime(session.endTime)}
                       </span>
-                                            {/* Nom de salle cliquable sans <a> à l'intérieur d'un autre <a> */}
+                                            {/* Nom de salle cliquable */}
                                             <span
                                                 onClick={(e) => {
                                                     e.preventDefault();

@@ -64,5 +64,5 @@ export const authOptions: NextAuthOptions = {
         },
     },
     session: { strategy: "jwt" },
-    pages: { signIn: "/login" },
+    pages: { signIn: "/admin/login" },
 };

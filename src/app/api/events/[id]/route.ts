@@ -5,7 +5,7 @@ import { requireAdmin } from "@/lib/adminAuth";
 // GET /api/events/:id — public
 export async function GET(_: NextRequest, { params }: { params: Promise<{ id: string }> }) {
     const { id } = await params;
-    console.log(">>> ID reçu par la route:", id); // ← ajoute cette ligne
+    console.log(">>> ID reçu par la route:", id);
 
     const event = await prisma.event.findUnique({
         where: { id },

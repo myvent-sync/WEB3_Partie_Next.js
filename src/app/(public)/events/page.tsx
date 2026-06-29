@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { Event } from "@/types";
+import { MapPin, Calendar, LayoutList } from "lucide-react";
 
 async function getEvents(): Promise<Event[]> {
     try {
@@ -26,25 +27,31 @@ export default async function EventsPage() {
     const events = await getEvents();
 
     return (
-        <div className="max-w-6xl mx-auto px-6 py-16">
-            <div className="mb-16 fade-up">
-                <p className="text-[10px] font-mono tracking-[0.25em] uppercase text-primary mb-4">Plateforme événementielle</p>
-                <h1 className="text-6xl md:text-6xl font-extrabold tracking-tight text-foreground mb-5 leading-none">Événements</h1>
-                <p className="text-base text-muted-foreground max-w-md leading-relaxed">Suivez les sessions en direct, posez vos questions et naviguez dans le planning en temps réel.</p>
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 py-10 sm:py-16">
+            {/* Header */}
+            <div className="mb-10 sm:mb-16 fade-up">
+                <p className="text-[10px] font-mono tracking-[0.25em] uppercase text-primary mb-3">Plateforme événementielle</p>
+                <h1 className="text-4xl sm:text-6xl font-extrabold tracking-tight text-foreground mb-4 leading-none">Événements</h1>
+                <p className="text-sm sm:text-base text-muted-foreground max-w-md leading-relaxed">
+                    Suivez les sessions en direct, posez vos questions et naviguez dans le planning en temps réel.
+                </p>
             </div>
 
             {events.length === 0 ? (
-                <div className="border border-dashed border-border rounded-xl p-20 text-center fade-up-1">
+                <div className="border border-dashed border-border rounded-xl p-12 sm:p-20 text-center fade-up-1">
                     <p className="text-xs font-mono text-muted-foreground">Aucun événement disponible pour le moment</p>
                 </div>
             ) : (
                 <div className="fade-up-1">
-                    <div className="grid grid-cols-[1fr_180px_160px_80px] gap-6 px-5 pb-3 border-b border-border">
+                    {/* Header tableau — desktop uniquement */}
+                    <div className="hidden md:grid grid-cols-[1fr_180px_160px_80px] gap-6 px-5 pb-3 border-b border-border">
                         {["Événement", "Lieu", "Dates", "Sessions"].map(h => (
                             <span key={h} className="text-[10px] font-mono tracking-[0.15em] uppercase text-muted-foreground">{h}</span>
                         ))}
                     </div>
-                    <div className="divide-y divide-border">
+
+                    {/* Liste desktop */}
+                    <div className="hidden md:block divide-y divide-border">
                         {events.map(event => {
                             const live = isEventLive(event.sessions);
                             return (
@@ -57,9 +64,50 @@ export default async function EventsPage() {
                                                 {event.description && <p className="text-xs text-muted-foreground mt-0.5 truncate">{event.description}</p>}
                                             </div>
                                         </div>
-                                        <div className="flex items-center"><span className="text-sm text-foreground/70 truncate">{event.location}</span></div>
-                                        <div className="flex items-center"><span className="text-xs font-mono text-muted-foreground">{formatDateRange(event.startDate, event.endDate)}</span></div>
-                                        <div className="flex items-center gap-2"><span className="text-2xl font-bold text-foreground">{event.sessions.length}</span></div>
+                                        <div className="flex items-center">
+                                            <span className="text-sm text-foreground/70 truncate">{event.location}</span>
+                                        </div>
+                                        <div className="flex items-center">
+                                            <span className="text-xs font-mono text-muted-foreground">{formatDateRange(event.startDate, event.endDate)}</span>
+                                        </div>
+                                        <div className="flex items-center">
+                                            <span className="text-2xl font-bold text-foreground">{event.sessions.length}</span>
+                                        </div>
+                                    </div>
+                                </Link>
+                            );
+                        })}
+                    </div>
+
+                    {/* Liste mobile — cards */}
+                    <div className="md:hidden flex flex-col gap-3">
+                        {events.map(event => {
+                            const live = isEventLive(event.sessions);
+                            return (
+                                <Link key={event.id} href={`/events/${event.id}`}>
+                                    <div className="glass-card p-4 group cursor-pointer">
+                                        <div className="flex items-start justify-between gap-3 mb-3">
+                                            <div className="min-w-0">
+                                                {live && <span className="badge-live mb-2 inline-flex"><span className="live-dot" />Live</span>}
+                                                <p className="font-semibold text-foreground group-hover:text-primary transition-colors">{event.title}</p>
+                                                {event.description && <p className="text-xs text-muted-foreground mt-0.5 line-clamp-2">{event.description}</p>}
+                                            </div>
+                                            <span className="text-foreground/30 group-hover:text-primary transition-colors shrink-0">→</span>
+                                        </div>
+                                        <div className="flex flex-wrap gap-3 text-xs text-muted-foreground">
+                                            <span className="flex items-center gap-1">
+                                                <MapPin size={11} />
+                                                {event.location}
+                                            </span>
+                                            <span className="flex items-center gap-1">
+                                                <Calendar size={11} />
+                                                {formatDateRange(event.startDate, event.endDate)}
+                                            </span>
+                                            <span className="flex items-center gap-1">
+                                                <LayoutList size={11} />
+                                                {event.sessions.length} session{event.sessions.length > 1 ? "s" : ""}
+                                            </span>
+                                        </div>
                                     </div>
                                 </Link>
                             );

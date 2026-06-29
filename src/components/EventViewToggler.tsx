@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { Event } from "@/types";
 import PlanningGrid from "./PlanningGrid";
 import FavoriteButton from "./FavoriteButton";
+import { User, MapPin, Clock } from "lucide-react";
 
 function formatTime(dateStr: string) {
     return new Date(dateStr).toLocaleTimeString("fr-FR", {
@@ -34,9 +35,7 @@ export default function EventViewToggler({ event }: { event: Event }) {
                     <button
                         onClick={() => setView("list")}
                         className={`px-3 py-1 text-xs font-medium rounded-md transition-all ${
-                            view === "list"
-                                ? "bg-primary text-white"
-                                : "text-muted-foreground hover:text-foreground"
+                            view === "list" ? "bg-primary text-white" : "text-muted-foreground hover:text-foreground"
                         }`}
                     >
                         Liste
@@ -44,9 +43,7 @@ export default function EventViewToggler({ event }: { event: Event }) {
                     <button
                         onClick={() => setView("grid")}
                         className={`px-3 py-1 text-xs font-medium rounded-md transition-all ${
-                            view === "grid"
-                                ? "bg-primary text-white"
-                                : "text-muted-foreground hover:text-foreground"
+                            view === "grid" ? "bg-primary text-white" : "text-muted-foreground hover:text-foreground"
                         }`}
                     >
                         Planning
@@ -60,41 +57,65 @@ export default function EventViewToggler({ event }: { event: Event }) {
                         const live = isLive(session);
                         return (
                             <Link key={session.id} href={`/sessions/${session.id}`}>
-                                <div
-                                    className={`glass-card p-5 transition-all group cursor-pointer flex items-center justify-between gap-4 ${
-                                        live ? "border-destructive/30 bg-destructive/5" : ""
-                                    }`}
-                                >
-                                    <div className="flex-1 min-w-0">
-                                        <div className="flex items-center gap-2 mb-1">
-                                            {live && <span className="badge-live"><span className="live-dot" />EN DIRECT</span>}
-                                            <h3 className="font-semibold text-foreground group-hover:text-primary transition-colors">
-                                                {session.title}
-                                            </h3>
+                                <div className={`glass-card p-5 transition-all group cursor-pointer ${
+                                    live ? "border-destructive/30 bg-destructive/5" : ""
+                                }`}>
+                                    <div className="flex items-start justify-between gap-4">
+                                        <div className="flex-1 min-w-0">
+                                            {/* Titre + badge live */}
+                                            <div className="flex items-center gap-2 mb-2">
+                                                {live && <span className="badge-live"><span className="live-dot" />EN DIRECT</span>}
+                                                <h3 className="font-semibold text-foreground group-hover:text-primary transition-colors">
+                                                    {session.title}
+                                                </h3>
+                                            </div>
+
+                                            {/* Horaire + salle */}
+                                            <div className="flex flex-wrap gap-4 text-xs text-muted-foreground mb-3">
+                                                <span className="flex items-center gap-1 font-mono">
+                                                    <Clock size={11} />
+                                                    {formatTime(session.startTime)} – {formatTime(session.endTime)}
+                                                </span>
+                                                {session.room?.name && (
+                                                    <span
+                                                        onClick={(e) => {
+                                                            e.preventDefault();
+                                                            e.stopPropagation();
+                                                            router.push(`/rooms/${session.room?.id}`);
+                                                        }}
+                                                        className="flex items-center gap-1 hover:text-primary underline-offset-2 hover:underline cursor-pointer"
+                                                    >
+                                                        <MapPin size={11} />
+                                                        {session.room.name}
+                                                    </span>
+                                                )}
+                                            </div>
+
+                                            {/* Intervenants */}
+                                            {session.speakers && session.speakers.length > 0 && (
+                                                <div className="flex flex-wrap gap-2">
+                                                    {session.speakers.map((speaker) => (
+                                                        <span
+                                                            key={speaker.id}
+                                                            onClick={(e) => {
+                                                                e.preventDefault();
+                                                                e.stopPropagation();
+                                                                router.push(`/speakers/${speaker.id}`);
+                                                            }}
+                                                            className="inline-flex items-center gap-1.5 bg-primary/10 hover:bg-primary/20 border border-primary/20 text-primary text-[11px] font-medium px-2.5 py-1 rounded-full cursor-pointer transition-colors"
+                                                        >
+                                                            <User size={10} />
+                                                            {speaker.fullName}
+                                                        </span>
+                                                    ))}
+                                                </div>
+                                            )}
                                         </div>
-                                        <div className="flex flex-wrap gap-3 text-xs">
-                      <span className="font-mono text-muted-foreground">
-                        {formatTime(session.startTime)} – {formatTime(session.endTime)}
-                      </span>
-                                            {/* Nom de salle cliquable */}
-                                            <span
-                                                onClick={(e) => {
-                                                    e.preventDefault();
-                                                    e.stopPropagation();
-                                                    router.push(`/rooms/${session.room?.id}`);
-                                                }}
-                                                className="text-foreground/60 hover:text-primary underline-offset-2 hover:underline cursor-pointer"
-                                            >
-                        {session.room?.name}
-                      </span>
-                                            <span className="text-foreground/60">
-                        {session.speakers?.map((s) => s.fullName).join(", ")}
-                      </span>
+
+                                        <div className="flex items-center gap-2 shrink-0 mt-1">
+                                            <FavoriteButton sessionId={session.id} />
+                                            <span className="text-foreground/30 group-hover:text-primary transition-colors">→</span>
                                         </div>
-                                    </div>
-                                    <div className="flex items-center gap-2 shrink-0">
-                                        <FavoriteButton sessionId={session.id} />
-                                        <span className="text-foreground/30 group-hover:text-primary transition-colors">→</span>
                                     </div>
                                 </div>
                             </Link>

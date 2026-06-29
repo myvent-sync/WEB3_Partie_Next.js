@@ -20,6 +20,23 @@
   --color-surface: #ffffff;
 }
 
+.dark {
+  --color-background: oklch(0.15 0.02 260);
+  --color-foreground: oklch(0.92 0.01 250);
+  --color-surface: oklch(0.2 0.02 260);
+  --color-border: oklch(0.3 0.02 260);
+  --color-input: oklch(0.25 0.02 260);
+  --color-muted: oklch(0.25 0.02 260);
+  --color-secondary: oklch(0.22 0.02 260);
+  --color-primary-soft: oklch(0.25 0.08 258);
+  --gradient-soft: linear-gradient(135deg, oklch(0.13 0.02 260), oklch(0.17 0.02 260));
+  --gradient-card: linear-gradient(135deg, oklch(0.2 0.02 260), oklch(0.22 0.03 260));
+}
+
+.dark .text-muted-foreground {
+  color: oklch(0.70 0.02 260);
+}
+
 :root {
   --font-display: 'Poppins', sans-serif;
   --font-mono: 'Geist Mono', monospace;
@@ -36,10 +53,12 @@
     color: var(--color-foreground);
     font-family: var(--font-display);
     min-height: 100vh;
+    transition: background 0.3s ease, color 0.3s ease;
   }
   h1, h2, h3, h4 {
     font-family: var(--font-display);
     font-weight: 700;
+    color: var(--color-foreground);
   }
 }
 
@@ -52,13 +71,14 @@
     animation: livePulse 1.5s ease-in-out infinite;
   }
   .card, .glass-card {
-    @apply bg-white/80 backdrop-blur-sm border border-border rounded-xl;
-    background: var(--gradient-card);
-    box-shadow: var(--shadow-card);
-  }
+  @apply backdrop-blur-sm border border-border rounded-xl;
+  background: var(--gradient-card);
+  box-shadow: var(--shadow-card);
+}
   .input {
-    @apply w-full bg-secondary border border-input rounded-lg px-4 py-2.5 text-sm text-foreground placeholder:text-foreground/40 outline-none focus:border-primary focus:ring-1 focus:ring-ring transition-colors;
-  }
+  @apply w-full border border-input rounded-lg px-4 py-2.5 text-sm text-foreground placeholder:text-foreground/40 outline-none focus:border-primary focus:ring-1 focus:ring-ring transition-colors;
+  background-color: var(--color-secondary);
+}
   .btn-primary {
     @apply bg-primary text-primary-foreground font-semibold text-sm px-5 py-2.5 rounded-lg hover:opacity-90 transition-all disabled:opacity-40 disabled:cursor-not-allowed;
     box-shadow: var(--shadow-glow);
@@ -76,8 +96,9 @@
     @apply text-2xl font-bold tracking-tight text-foreground mb-6;
   }
   .text-muted-foreground {
-    color: oklch(0.55 0.02 260);
-  }
+  color: oklch(0.55 0.02 260);
+}
+
 }
 
 @keyframes livePulse {
@@ -93,3 +114,38 @@
 .fade-up-1 { animation: fadeUp 0.35s ease 0.05s forwards; opacity: 0; }
 .fade-up-2 { animation: fadeUp 0.35s ease 0.1s forwards; opacity: 0; }
 .fade-up-3 { animation: fadeUp 0.35s ease 0.15s forwards; opacity: 0; }
+
+html.dark body {
+  background: linear-gradient(135deg, oklch(0.13 0.02 260), oklch(0.17 0.02 260)) !important;
+  color: oklch(0.92 0.01 250) !important;
+}
+
+html.dark h1,
+html.dark h2,
+html.dark h3,
+html.dark h4 {
+  color: oklch(0.92 0.01 250) !important;
+}
+
+html.dark p {
+  color: oklch(0.75 0.02 260) !important;
+}
+
+html.dark header {
+  background: oklch(0.18 0.02 260 / 0.8) !important;
+}
+
+html.dark .glass-card,
+html.dark .card {
+  background: oklch(0.2 0.02 260) !important;
+  border-color: oklch(0.3 0.02 260) !important;
+}
+
+html.dark aside,
+html.dark nav[class*="sidebar"],
+html.dark [class*="sidebar"] {
+  background: oklch(0.18 0.02 260) !important;
+}
+html.dark aside {
+  background: oklch(0.18 0.02 260 / 0.6) !important;
+}

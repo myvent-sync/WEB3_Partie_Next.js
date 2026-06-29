@@ -4,6 +4,7 @@ import PublicSidebar from "@/components/PublicSidebar";
 
 const baseNavItems = [
     { label: "Événements", href: "/events" },
+    { label: "Intervenants", href: "/speakers" },
 ];
 
 export default async function PublicLayout({ children }: { children: React.ReactNode }) {

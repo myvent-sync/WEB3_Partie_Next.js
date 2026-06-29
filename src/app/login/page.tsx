@@ -4,7 +4,7 @@ import { useState } from "react";
 import { signIn } from "next-auth/react";
 import { useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
-import { Radio, MessageCircle, Calendar, Settings } from "lucide-react";
+import { Radio, MessageCircle, Calendar, Settings, ArrowLeft } from "lucide-react";
 
 export default function LoginPage() {
     const router = useRouter();
@@ -30,6 +30,16 @@ export default function LoginPage() {
 
     return (
         <div className="min-h-[calc(100vh-56px)] flex items-center justify-center px-4 sm:px-6 py-8">
+            {/* Bouton Retour à l'accueil — fixe en haut à gauche */}
+            <Link
+                href="/"
+                className="fixed top-5 left-5 z-50 bg-white/80 dark:bg-gray-900/80 backdrop-blur-sm hover:bg-primary/10 border border-border rounded-full px-5 h-12 items-center gap-2 transition-all duration-200 shadow-lg flex"
+                title="Retour à l'accueil"
+            >
+                <ArrowLeft size={14} className="text-primary" />
+                <span className="text-sm font-mono font-bold text-primary">Accueil</span>
+            </Link>
+
             <div className="w-full max-w-5xl grid grid-cols-1 md:grid-cols-2 gap-10 md:gap-16 items-center">
 
                 {/* Colonne gauche — cachée sur mobile */}

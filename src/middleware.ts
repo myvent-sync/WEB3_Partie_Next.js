@@ -12,7 +12,20 @@ export default withAuth(
     },
     {
         callbacks: {
-            authorized: ({ token }) => !!token,
+            authorized: ({ token, req }) => {
+                const path = req.nextUrl.pathname;
+                // Ces routes sont publiques, pas besoin d'être connecté
+                if (
+                    path.startsWith("/events") ||
+                    path.startsWith("/sessions") ||
+                    path.startsWith("/speakers") ||
+                    path === "/"
+                ) {
+                    return true;
+                }
+                // Les autres routes nécessitent d'être connecté
+                return !!token;
+            },
         },
         pages: {
             signIn: "/login",
@@ -23,10 +36,11 @@ export default withAuth(
 export const config = {
     matcher: [
         "/",
-        "/events",
         "/events/:path*",
-        "/admin/((?!login).*)",
         "/sessions/:path*",
         "/speakers/:path*",
+        "/favorites/:path*",
+        "/speaker/:path*",
+        "/admin/((?!login).*)",
     ],
 };

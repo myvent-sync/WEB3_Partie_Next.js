@@ -35,7 +35,6 @@ export default withAuth(
 
 export const config = {
     matcher: [
-        "/",
         "/events/:path*",
         "/sessions/:path*",
         "/speakers/:path*",

@@ -14,7 +14,7 @@ export default async function SpeakerDashboardPage() {
             sessions: {
                 include: {
                     event: true,
-                    _count: { select: { questions: true } }, // compteur de questions
+                    _count: { select: { questions: true } },
                 },
                 orderBy: { startTime: "asc" },
             },
